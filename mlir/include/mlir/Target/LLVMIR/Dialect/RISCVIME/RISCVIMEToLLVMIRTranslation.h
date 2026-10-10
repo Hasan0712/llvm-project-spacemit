@@ -1,0 +1,12 @@
+#ifndef MLIR_TARGET_LLVMIR_DIALECT_RISCVIME_RISCVIMETOLLVMIRTRANSLATION_H
+#define MLIR_TARGET_LLVMIR_DIALECT_RISCVIME_RISCVIMETOLLVMIRTRANSLATION_H
+
+namespace mlir {
+class DialectRegistry;
+class MLIRContext;
+
+void registerRISCVIMEDialectTranslation(DialectRegistry &registry);
+void registerRISCVIMEDialectTranslation(MLIRContext &context);
+} // namespace mlir
+
+#endif // MLIR_TARGET_LLVMIR_DIALECT_RISCVIME_RISCVIMETOLLVMIRTRANSLATION_H

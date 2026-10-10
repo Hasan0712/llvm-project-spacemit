@@ -44,7 +44,6 @@ add_subdirectory(Vector)
 add_subdirectory(WasmSSA)
 add_subdirectory(X86)
 add_subdirectory(XeGPU)
-
 set(LLVM_OPTIONAL_SOURCES
   Traits.cpp
 )
@@ -58,3 +57,4 @@ add_mlir_library(MLIRDialect
   LINK_LIBS PUBLIC
   MLIRIR
   )
+add_subdirectory(RISCVIME)

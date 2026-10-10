@@ -12,6 +12,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "mlir/InitAllDialects.h"
+#include "mlir/Dialect/RISCVIME/RISCVIMEDialect.h"
 
 #include "mlir/Dialect/AMDGPU/IR/AMDGPUDialectDecl.h"
 #include "mlir/Dialect/AMDGPU/Transforms/MemoryAccessOpInterfacesImpl.h"
@@ -146,6 +147,7 @@ void mlir::registerAllDialects(DialectRegistry &registry) {
                   pdl_interp::PDLInterpDialect,
                   ptr::PtrDialect,
                   quant::QuantDialect,
+                  riscv_ime::RISCVIMEDialect,
                   ROCDL::ROCDLDialect,
                   scf::SCFDialect,
                   shape::ShapeDialect,

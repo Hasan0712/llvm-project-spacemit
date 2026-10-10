@@ -21,9 +21,8 @@ let DecoderNamespace = "XSMT" in {
     // Using odd registers may cause undefined behavior.
 
     foreach a = VTypeEncodes in
-      def SMT_VMADOT#!toupper(a.Name) :
-            SMTVMADot<a.Encoding, "smt.vmadot"#a.Name>, Sched<[]>;
-
+       def SMT_VMADOT#!toupper(a.Name)#_VV :
+        SMTVMADot<a.Encoding, "smt.vmadot"#a.Name>, Sched<[]>;
     //===----------------------------------------------------------------------===//
     // Sliding-window Vector Dot Product Instructions
     //
@@ -109,3 +108,50 @@ let DecoderNamespace = "XSMT" in {
     }
   }
 } // DecoderNamespace = "XSMT"
+//===== Pseudos and patterns (OUTSIDE DecoderNamespace) =====
+
+multiclass VPseudoVMADOT_VV {
+  foreach m = [V_MF2, V_M1, V_M2, V_M4, V_M8] in {
+    defm "" : VPseudoBinaryV_VV<m>,
+              SchedBinary<"WriteVIMulAddV", "ReadVIMulAddV", "ReadVIMulAddV",
+                          m.MX, forcePassthruRead=true>;
+  }
+}
+
+let Predicates = [HasVendorXSMTVDot] in {
+  defm PseudoSMT_VMADOT   : VPseudoVMADOT_VV;
+  defm PseudoSMT_VMADOTU  : VPseudoVMADOT_VV;
+  defm PseudoSMT_VMADOTUS : VPseudoVMADOT_VV;
+  defm PseudoSMT_VMADOTSU : VPseudoVMADOT_VV;
+}
+
+let Predicates = [HasVendorXSMTVDot] in {
+  defm : VPatTernaryVD4DOT_VV<"int_riscv_vmadot",   "PseudoSMT_VMADOT",
+    [VTypeInfoToWide<VI8MF2, VI32MF2>,
+     VTypeInfoToWide<VI8M1,  VI32M1>,
+     VTypeInfoToWide<VI8M2,  VI32M2>,
+     VTypeInfoToWide<VI8M4,  VI32M4>,
+     VTypeInfoToWide<VI8M8,  VI32M8>]>;
+
+  defm : VPatTernaryVD4DOT_VV<"int_riscv_vmadotu",  "PseudoSMT_VMADOTU",
+    [VTypeInfoToWide<VI8MF2, VI32MF2>,
+     VTypeInfoToWide<VI8M1,  VI32M1>,
+     VTypeInfoToWide<VI8M2,  VI32M2>,
+     VTypeInfoToWide<VI8M4,  VI32M4>,
+     VTypeInfoToWide<VI8M8,  VI32M8>]>;
+
+  defm : VPatTernaryVD4DOT_VV<"int_riscv_vmadotus", "PseudoSMT_VMADOTUS",
+    [VTypeInfoToWide<VI8MF2, VI32MF2>,
+     VTypeInfoToWide<VI8M1,  VI32M1>,
+     VTypeInfoToWide<VI8M2,  VI32M2>,
+     VTypeInfoToWide<VI8M4,  VI32M4>,
+     VTypeInfoToWide<VI8M8,  VI32M8>]>;
+
+  defm : VPatTernaryVD4DOT_VV<"int_riscv_vmadotsu", "PseudoSMT_VMADOTSU",
+    [VTypeInfoToWide<VI8MF2, VI32MF2>,
+     VTypeInfoToWide<VI8M1,  VI32M1>,
+     VTypeInfoToWide<VI8M2,  VI32M2>,
+     VTypeInfoToWide<VI8M4,  VI32M4>,
+     VTypeInfoToWide<VI8M8,  VI32M8>]>;
+}
+

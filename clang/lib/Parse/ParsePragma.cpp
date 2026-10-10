@@ -4238,10 +4238,10 @@ void PragmaRISCVHandler::HandlePragma(Preprocessor &PP,
   PP.Lex(Tok);
   II = Tok.getIdentifierInfo();
   if (!II || !(II->isStr("vector") || II->isStr("sifive_vector") ||
-               II->isStr("andes_vector"))) {
+               II->isStr("andes_vector") || II->isStr("spacemit_vector"))) {
     PP.Diag(Tok.getLocation(), diag::warn_pragma_invalid_argument)
         << PP.getSpelling(Tok) << "riscv" << /*Expected=*/true
-        << "'vector', 'sifive_vector' or 'andes_vector'";
+        << "'vector', 'sifive_vector' or 'andes_vector' or 'spacemit_vector'";
     return;
   }
 
@@ -4258,4 +4258,6 @@ void PragmaRISCVHandler::HandlePragma(Preprocessor &PP,
     Actions.RISCV().DeclareSiFiveVectorBuiltins = true;
   else if (II->isStr("andes_vector"))
     Actions.RISCV().DeclareAndesVectorBuiltins = true;
+else if (II->isStr("spacemit_vector"))
+  Actions.RISCV().DeclareSpacemitVectorBuiltins = true;
 }

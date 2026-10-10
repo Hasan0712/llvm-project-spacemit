@@ -12,6 +12,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "mlir/InitAllPasses.h"
+#include "mlir/Dialect/RISCVIME/Transforms/Passes.h"
 
 #include "mlir/Conversion/Passes.h"
 #include "mlir/Dialect/AMDGPU/Transforms/Passes.h"
@@ -93,6 +94,7 @@ void mlir::registerAllPasses() {
   transform::registerTransformPasses();
   vector::registerVectorPasses();
   arm_sme::registerArmSMEPasses();
+  riscv_ime::registerRISCVIMEPasses();
   arm_sve::registerArmSVEPasses();
   emitc::registerEmitCPasses();
   xegpu::registerXeGPUPasses();

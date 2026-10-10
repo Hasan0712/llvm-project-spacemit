@@ -17,6 +17,7 @@
 #include "mlir/InitAllDialects.h"
 #include "mlir/InitAllExtensions.h"
 #include "mlir/InitAllPasses.h"
+#include "mlir/Dialect/RISCVIME/Transforms/Passes.h"
 #include "mlir/Pass/Pass.h"
 #include "mlir/Pass/PassManager.h"
 #include "mlir/Support/FileUtilities.h"
@@ -324,6 +325,7 @@ static void registerTestPasses() {
 
 int main(int argc, char **argv) {
   registerAllPasses();
+  mlir::riscv_ime::registerRISCVIMEPasses();
 #ifdef MLIR_INCLUDE_TESTS
   registerTestPasses();
 #endif
